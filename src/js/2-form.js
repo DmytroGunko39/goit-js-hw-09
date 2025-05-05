@@ -56,14 +56,23 @@ const onFormChange = ({ target: formErea }) => {
 const onFormSubmit = event => {
   event.preventDefault();
 
-  localStorage.removeItem('feedback-form-state');
-  event.currentTarget.reset();
-  if (!Object.values(formData).every(value => value.trim() !== '')) {
+  if (!formData.email.trim() || !formData.message.trim()) {
     alert('Fill please all fields');
     return;
   }
   console.log(formData);
+
+  localStorage.removeItem('feedback-form-state');
+
+  event.currentTarget.reset();
+  formData = {
+    email: '',
+    message: '',
+  };
 };
 
-refs.feedbackForm.addEventListener('input', onFormChange);
-refs.feedbackForm.addEventListener('submit', onFormSubmit);
+if (refs.feedbackForm) {
+  fillFieldsForm(refs.feedbackForm);
+  refs.feedbackForm.addEventListener('input', onFormChange);
+  refs.feedbackForm.addEventListener('submit', onFormSubmit);
+}
